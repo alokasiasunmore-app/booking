@@ -12,8 +12,23 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   
   <script>
-    // URL EXEC APPS SCRIPT SUNMORE STUDIO (DIRECT API)
+    // URL APPS SCRIPT DEPLOYMENT (EXEC)
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbynSVHqpnoijE0eoAjh79JbVYVmbVMWqofmOV3sl3jC23LLldaXaijSI4J7oSYOKA/exec";
+
+    // CLOUDINARY PLACEHOLDERS
+    const CLOUDINARY_PLACEHOLDERS = {
+      gradStudio: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=600&auto=format&fit=crop",
+      gradOutdoor: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop",
+      family: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=300&auto=format&fit=crop",
+      maternity: "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?q=80&w=300&auto=format&fit=crop",
+      prewedding: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=300&auto=format&fit=crop",
+      pasFoto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop",
+      personalBranding: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop",
+      couple: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=300&auto=format&fit=crop",
+      birthday: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=300&auto=format&fit=crop",
+      group: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=300&auto=format&fit=crop",
+      selfPhoto: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=300&auto=format&fit=crop"
+    };
 
     tailwind.config = {
       theme: {
@@ -37,89 +52,197 @@
   <style>
     body { background-color: #E6F3FF; font-family: 'Poppins', sans-serif; color: #1E517B; }
     .glassmorphism {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.9);
     }
   </style>
 </head>
-<body x-data="bookingApp()" x-init="initApp()" class="min-h-screen bg-slate-100 flex justify-center items-start sm:py-8">
+<body x-data="bookingApp()" x-init="initApp()" class="min-h-screen bg-slate-100 flex justify-center items-start sm:py-6">
 
-  <!-- MOCKUP CONTAINER (MOBILE-FIRST FRAME) -->
-  <div class="w-full max-w-md bg-gradient-to-b from-blue-50 to-oceanBg sm:rounded-3xl sm:shadow-2xl border-0 sm:border border-white/80 overflow-hidden min-h-screen sm:min-h-[840px] relative pb-12">
+  <!-- MOBILE-FIRST FRAME CONTAINER -->
+  <div class="w-full max-w-md bg-gradient-to-b from-blue-50 to-oceanBg sm:rounded-3xl sm:shadow-2xl border-0 sm:border border-white/80 overflow-hidden min-h-screen sm:min-h-[840px] relative pb-16">
 
-    <!-- HEADER COMPACT -->
-    <header class="sticky top-0 z-40 glassmorphism shadow-sm px-4 py-3 flex items-center justify-between">
+    <!-- HEADER LOGO & STATUS STUDIO -->
+    <header class="sticky top-0 z-40 glassmorphism shadow-sm px-4 py-3.5 flex items-center justify-between border-b border-white/80">
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-oceanBlue to-cutePink flex items-center justify-center font-bold text-xl text-white shadow-sm">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-oceanBlue via-blue-400 to-cutePink flex items-center justify-center font-bold text-2xl text-white shadow-md border border-white">
           S
         </div>
         <div>
-          <h1 class="text-sm font-bold leading-tight text-oceanPrimary">Sunmore Photo Studio</h1>
-          <p class="text-[11px] text-gray-500">Wedomartani, Sleman</p>
+          <h1 class="text-sm font-bold leading-tight text-oceanPrimary tracking-wide">Sunmore Photo Studio</h1>
+          <p class="text-[11px] text-gray-500 font-medium">Jl. Dworowati No.11, Sleman</p>
         </div>
       </div>
-      <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-300">
-        ● OPEN
+      <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-300 flex items-center space-x-1 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+        <span>OPEN</span>
       </span>
     </header>
 
-    <main class="px-4 pt-4 space-y-4">
+    <main class="px-4 pt-4 space-y-5">
 
-      <!-- HERO BANNER -->
-      <div class="relative rounded-2xl overflow-hidden shadow-sm glassmorphism p-4 text-center border-l-4 border-oceanBlue">
-        <h2 class="text-base font-bold text-oceanPrimary">Abadikan Momen Terbaikmu ✨</h2>
-        <p class="text-xs text-gray-600 mt-1">Reservasi mandiri cepat, mudah, dan langsung terkonfirmasi.</p>
+      <!-- WELCOMING HERO BANNER -->
+      <div class="relative rounded-2xl overflow-hidden shadow-sm glassmorphism p-3.5 text-center border-l-4 border-oceanBlue">
+        <h2 class="text-xs font-bold text-oceanPrimary">Sistem Reservasi Mandiri Online ✨</h2>
+        <p class="text-[11px] text-gray-600 mt-0.5">Pilih tanggal untuk melihat jadwal slot foto yang tersedia.</p>
       </div>
 
-      <!-- LOADING INDICATOR -->
-      <div x-show="initialLoading" class="text-center py-10 space-y-3 glassmorphism rounded-2xl">
-        <div class="animate-spin text-4xl inline-block text-oceanBlue">🌀</div>
-        <p class="text-xs text-gray-600 font-medium">Sedang menghubungkan ke Google Sheets Studio...</p>
-      </div>
-
-      <!-- STEP 1: KATALOG PRODUK -->
-      <section x-show="!initialLoading" class="space-y-3">
+      <!-- TAHAP 1: TOMBOL PILIHAN TANGGAL FOTO (PEMICU SYNC BACKEND) -->
+      <section class="glassmorphism p-4 rounded-2xl shadow-sm border border-white space-y-2">
         <div class="flex items-center justify-between">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-oceanPrimary">1. Pilih Paket Foto</h3>
-          <span class="text-xs font-semibold text-oceanBlue bg-white px-2 py-0.5 rounded-full shadow-sm" x-text="selectedProduct ? selectedProduct.nama : 'Belum dipilih'"></span>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-oceanPrimary flex items-center space-x-1">
+            <span>📅</span> <span>Langkah 1: Tentukan Tanggal Foto</span>
+          </h3>
+          <span x-show="bookingDate" class="text-[10px] bg-green-500 text-white px-2 py-0.5 rounded-full font-bold">✓ Terpilih</span>
         </div>
-
-        <!-- LIST PAKET FOTO -->
-        <div class="grid grid-cols-1 gap-2.5 max-h-80 overflow-y-auto pr-1">
-          <template x-for="p in products" :key="p.kode">
-            <div @click="selectProduct(p)" 
-                 :class="selectedProduct && selectedProduct.kode === p.kode ? 'ring-2 ring-oceanBlue bg-white shadow-md' : 'glassmorphism hover:bg-white/90'"
-                 class="p-3.5 rounded-2xl shadow-sm cursor-pointer transition-all flex justify-between items-center group">
-              <div class="space-y-1">
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-cutePink/80 text-oceanPrimary" x-text="p.kode"></span>
-                <h4 class="text-xs font-bold text-oceanPrimary group-hover:text-oceanBlue" x-text="p.nama"></h4>
-                <p class="text-[11px] text-gray-500">Durasi: <span class="font-medium text-gray-700" x-text="p.durasi"></span> Menit</p>
-              </div>
-              <div class="text-right space-y-1">
-                <p class="text-xs font-bold text-ctaCoral">Rp <span x-text="Number(p.hargaFull).toLocaleString('id-ID')"></span></p>
-                <button class="text-[10px] bg-oceanBlue text-white px-2.5 py-1 rounded-lg font-semibold shadow-sm block ml-auto">
-                  <span x-text="selectedProduct && selectedProduct.kode === p.kode ? '✓ Terpilih' : 'Pilih Paket'"></span>
-                </button>
-              </div>
-            </div>
-          </template>
-        </div>
+        
+        <input type="date" x-model="bookingDate" @change="onDateSelected()" 
+               class="w-full text-xs font-semibold p-3 rounded-xl border border-oceanSoft focus:ring-2 focus:ring-oceanBlue outline-none bg-white text-oceanPrimary shadow-sm">
+        <p x-show="!bookingDate" class="text-[10px] text-amber-600 font-medium">Silakan pilih tanggal foto terlebih dahulu untuk mengaktifkan pilihan paket.</p>
       </section>
 
-      <!-- STEP 2: KALENDER & JAM -->
-      <section x-show="selectedProduct && !initialLoading" class="space-y-3 glassmorphism p-4 rounded-2xl shadow-sm">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-oceanPrimary">2. Pilih Tanggal & Jam Foto</h3>
-        
-        <div>
-          <label class="block text-xs font-medium text-gray-700 mb-1">Tanggal Sesi Foto</label>
-          <input type="date" x-model="bookingDate" @change="generateTimeSlots()" 
-                 class="w-full text-xs p-2.5 rounded-xl border border-oceanSoft focus:ring-2 focus:ring-oceanBlue outline-none bg-white">
-        </div>
+      <!-- TAHAP 2: PILIHAN PRODUK (AKTIFF SETELAH TANGGAL DIPILIH) -->
+      <div x-show="bookingDate" class="space-y-5" x-transition>
 
-        <div x-show="bookingDate">
-          <label class="block text-xs font-medium text-gray-700 mb-1.5">Jam Operational Available (+5m buffer)</label>
+        <!-- A. SPECIAL GRADUATION PACKAGES (GRID 2 KOTAK BESAR) -->
+        <section class="space-y-2">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-oceanPrimary flex items-center space-x-1">
+            <span>🎓</span> <span>Special Graduation Packages</span>
+          </h3>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <!-- Graduation Studio Card -->
+            <div @click="selectCategory('Graduation Studio')" 
+                 :class="selectedCategory === 'Graduation Studio' ? 'ring-2 ring-ctaCoral scale-[1.02]' : 'hover:opacity-95'"
+                 class="relative h-36 rounded-2xl overflow-hidden shadow-md cursor-pointer transition transform group border border-white">
+              <img :src="placeholders.gradStudio" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-oceanPrimary/90 via-oceanPrimary/30 to-transparent p-3 flex flex-col justify-end">
+                <span class="text-[9px] font-extrabold bg-cutePink text-oceanPrimary px-2 py-0.5 rounded-md w-max mb-1">STUDIO</span>
+                <h4 class="text-xs font-bold text-white leading-tight">Graduation Studio</h4>
+                <p class="text-[10px] text-blue-100">Mulai Rp 175rb</p>
+              </div>
+            </div>
+
+            <!-- Graduation Outdoor Card -->
+            <div @click="selectCategory('Graduation Outdoor')" 
+                 :class="selectedCategory === 'Graduation Outdoor' ? 'ring-2 ring-ctaCoral scale-[1.02]' : 'hover:opacity-95'"
+                 class="relative h-36 rounded-2xl overflow-hidden shadow-md cursor-pointer transition transform group border border-white">
+              <img :src="placeholders.gradOutdoor" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-oceanPrimary/90 via-oceanPrimary/30 to-transparent p-3 flex flex-col justify-end">
+                <span class="text-[9px] font-extrabold bg-oceanSoft text-oceanPrimary px-2 py-0.5 rounded-md w-max mb-1">OUTDOOR</span>
+                <h4 class="text-xs font-bold text-white leading-tight">Graduation Outdoor</h4>
+                <p class="text-[10px] text-blue-100">Mulai Rp 250rb</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- B. KATEGORI FOTO STUDIO (GRID 3x3) -->
+        <section class="space-y-2">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-oceanPrimary flex items-center space-x-1">
+            <span>✨</span> <span>Kategori Foto Studio</span>
+          </h3>
+
+          <div class="grid grid-cols-3 gap-2">
+
+            <!-- 1. Family -->
+            <div @click="selectCategory('Family')" 
+                 :class="selectedCategory === 'Family' ? 'ring-2 ring-ctaCoral' : ''"
+                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
+                <img :src="placeholders.family" class="w-full h-full object-cover">
+              </div>
+              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Family</h4>
+            </div>
+
+            <!-- 2. Maternity -->
+            <div @click="selectCategory('Maternity')" 
+                 :class="selectedCategory === 'Maternity' ? 'ring-2 ring-ctaCoral' : ''"
+                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
+                <img :src="placeholders.maternity" class="w-full h-full object-cover">
+              </div>
+              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Maternity</h4>
+            </div>
+
+            <!-- 3. Pre Wedding -->
+            <div @click="selectCategory('Pre Wedding')" 
+                 :class="selectedCategory === 'Pre Wedding' ? 'ring-2 ring-ctaCoral' : ''"
+                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
+                <img :src="placeholders.prewedding" class="w-full h-full object-cover">
+              </div>
+              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Pre Wedding</h4>
+            </div>
+
+            <!-- 4. Pas Foto -->
+            <div @click="selectCategory('Pas Foto')" 
+                 :class="selectedCategory === 'Pas Foto' ? 'ring-2 ring-ctaCoral' : ''"
+                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
+                <img :src="placeholders.pasFoto" class="w-full h-full object-cover">
+              </div>
+              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Pas Foto</h4>
+            </div>
+
+            <!-- 5. Personal Branding -->
+            <div @click="selectCategory('Personal Branding')" 
+                 :class="selectedCategory === 'Personal Branding' ? 'ring-2 ring-ctaCoral' : ''"
+                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
+                <img :src="placeholders.personalBranding" class="w-full h-full object-cover">
+              </div>
+              <h4 class="text-[10px] font-bold text-oceanPrimary leading-tight">Personal Branding</h4>
+            </div>
+
+            <!-- 6. Couple -->
+            <div @click="selectCategory('Couple')" 
+                 :class="selectedCategory === 'Couple' ? 'ring-2 ring-ctaCoral' : ''"
+                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
+                <img :src="placeholders.couple" class="w-full h-full object-cover">
+              </div>
+              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Couple</h4>
+            </div>
+
+            <!-- 7. Birth day -->
+            <div @click="selectCategory('Birth day')" 
+                 :class="selectedCategory === 'Birth day' ? 'ring-2 ring-ctaCoral' : ''"
+                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
+                <img :src="placeholders.birthday" class="w-full h-full object-cover">
+              </div>
+              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Birth day</h4>
+            </div>
+
+            <!-- 8. Group -->
+            <div @click="selectCategory('Group')" 
+                 :class="selectedCategory === 'Group' ? 'ring-2 ring-ctaCoral' : ''"
+                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
+                <img :src="placeholders.group" class="w-full h-full object-cover">
+              </div>
+              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Group / Genks</h4>
+            </div>
+
+            <!-- 9. Self Photo -->
+            <div @click="selectCategory('Self Photo')" 
+                 :class="selectedCategory === 'Self Photo' ? 'ring-2 ring-ctaCoral' : ''"
+                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
+                <img :src="placeholders.selfPhoto" class="w-full h-full object-cover">
+              </div>
+              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Self Photo</h4>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- JAM OPERASIONAL AVAILABLE (+5 MIN BUFFER) -->
+        <section x-show="selectedCategory" class="glassmorphism p-4 rounded-2xl shadow-sm space-y-3 border border-white" x-transition>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-oceanPrimary">⏰ Pilih Jam Sesi Foto Available</h3>
           <div class="grid grid-cols-4 gap-1.5 max-h-40 overflow-y-auto">
             <template x-for="slot in timeSlots" :key="slot.time">
               <button @click="if(!slot.booked) selectedTime = slot.time"
@@ -134,12 +257,24 @@
               </button>
             </template>
           </div>
-        </div>
-      </section>
 
-      <!-- STEP 3: FORMULIR ISIAN -->
-      <section x-show="selectedProduct && selectedTime" class="space-y-3 glassmorphism p-4 rounded-2xl shadow-sm">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-oceanPrimary">3. Form Data Pemesan</h3>
+          <!-- TOMBOL PENERUS MUNCULKAN POP-UP TNC PETUNJUK RESERVASI -->
+          <div x-show="selectedTime" class="pt-2">
+            <button @click="openTncBookingModal()" 
+                    class="w-full py-3 bg-oceanBlue hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow-md transition transform active:scale-98 flex justify-center items-center space-x-2">
+              <span>Lanjutkan Reservasi Paket Ini</span>
+              <span>➔</span>
+            </button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- SECTION FORMULIR ISIAN DATA KLIEN (MUNCUL SETELAH TNC PETUNJUK DISETUJUI) -->
+      <section x-show="showFormSection" id="formSection" class="glassmorphism p-4 rounded-2xl shadow-sm border border-white space-y-3" x-transition>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-oceanPrimary border-b border-oceanSoft pb-2">
+          📝 Langkah 3: Formulir Data Pemesan
+        </h3>
 
         <div class="space-y-2.5 text-xs">
           <div>
@@ -184,23 +319,71 @@
             <input type="file" @change="handleFileUpload($event)" accept="image/*" class="w-full text-xs text-gray-500 bg-white p-2 rounded-xl border border-oceanSoft">
           </div>
         </div>
-      </section>
 
-      <!-- TOMBOL KONFIRMASI (CTA) -->
-      <div x-show="selectedProduct && selectedTime" class="pt-2">
-        <button @click="submitBooking()" 
-                :disabled="loading"
-                class="w-full py-3.5 bg-ctaCoral hover:bg-orange-600 text-white font-bold rounded-2xl shadow-lg transition transform active:scale-95 flex justify-center items-center space-x-2">
-          <span x-show="!loading">🚀 CONFIRM BOOKING & GET INVOICE</span>
-          <span x-show="loading" class="animate-spin text-lg">🌀</span>
-          <span x-show="loading">Memproses Booking...</span>
-        </button>
-      </div>
+        <!-- TOMBOL SUBMIT UNTUK MEMUNCULKAN POP-UP TNC PROSES FOTO -->
+        <div class="pt-2">
+          <button @click="openTncFotoModal()" 
+                  class="w-full py-3.5 bg-ctaCoral hover:bg-orange-600 text-white font-bold rounded-2xl shadow-lg transition transform active:scale-95 flex justify-center items-center space-x-2">
+            <span>🚀 SUBMIT DATA BOOKING</span>
+          </button>
+        </div>
+      </section>
 
     </main>
 
-    <!-- MODAL SUCCESS -->
-    <div x-show="successData" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <!-- POP-UP 1: TNC & PETUNJUK RESERVASI (SEBELUM DITERAHPKAN FORM) -->
+    <div x-show="modalTncBooking" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" x-transition>
+      <div class="bg-white rounded-3xl p-5 max-w-sm w-full space-y-3 text-left shadow-2xl border border-white">
+        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+          <h3 class="text-xs font-bold text-oceanPrimary flex items-center space-x-1">
+            <span>📌</span> <span>Petunjuk & Ketentuan Reservasi</span>
+          </h3>
+          <button @click="modalTncBooking = false" class="text-gray-400 font-bold">✕</button>
+        </div>
+        <div class="text-[11px] text-gray-600 space-y-2 max-h-52 overflow-y-auto pr-1">
+          <p><b>1. Uang Muka (DP):</b> Reservasi hanya dianggap SAH setelah mengunggah bukti transfer DP resmi.</p>
+          <p><b>2. Toleransi Keterlambatan:</b> Harap hadir 10 menit sebelum jam sesi foto. Keterlambatan akan mengurangi durasi foto Anda.</p>
+          <p><b>3. Kebijakan Reschedule:</b> Perubahan jadwal maksimal diinformasikan H-2 dari tanggal sesi foto.</p>
+        </div>
+        <button @click="confirmTncBooking()" class="w-full py-2.5 bg-oceanBlue text-white font-bold text-xs rounded-xl shadow">
+          Saya Paham & Lanjutkan Isi Data ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- POP-UP 2: TNC PROSES FOTO & CHECKLIST PERSETUJUAN (SEBELUM INTI SUBMIT) -->
+    <div x-show="modalTncFoto" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" x-transition>
+      <div class="bg-white rounded-3xl p-5 max-w-sm w-full space-y-3 text-left shadow-2xl border border-white">
+        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+          <h3 class="text-xs font-bold text-oceanPrimary flex items-center space-x-1">
+            <span>📸</span> <span>Ketentuan Proses Foto Studio</span>
+          </h3>
+          <button @click="modalTncFoto = false" class="text-gray-400 font-bold">✕</button>
+        </div>
+        <div class="text-[11px] text-gray-600 space-y-2 max-h-48 overflow-y-auto pr-1">
+          <p><b>1. Edit Foto:</b> Pengeditan melingkupi warna & retouching standar Sunmore Studio.</p>
+          <p><b>2. Hasil Master File:</b> Tautan Google Drive foto akan dikirimkan maksimal H+2 setelah foto.</p>
+          <p><b>3. Hak Cipta & Konten:</b> Pihak studio dapat menampilkan hasil karya foto untuk keperluan portofolio kecuali ada perjanjian persetujuan tertulis.</p>
+        </div>
+
+        <div class="pt-2 border-t border-gray-100 flex items-start space-x-2">
+          <input type="checkbox" id="checkConsent" x-model="consentAgreed" class="mt-0.5 rounded text-ctaCoral focus:ring-ctaCoral">
+          <label for="checkConsent" class="text-[10px] text-gray-700 font-medium">Saya telah membaca, memahami, dan menyetujui seluruh ketentuan proses foto di Sunmore Studio.</label>
+        </div>
+
+        <button @click="submitFinalBooking()" 
+                :disabled="!consentAgreed || loading"
+                :class="!consentAgreed || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-ctaCoral hover:bg-orange-600'"
+                class="w-full py-3 text-white font-bold text-xs rounded-xl shadow transition flex justify-center items-center space-x-2">
+          <span x-show="!loading">🚀 SETUJU & KONFIRMASI BOOKING</span>
+          <span x-show="loading" class="animate-spin text-sm">🌀</span>
+          <span x-show="loading">Memproses PDF & Data...</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- POP-UP 3: INVOICE SUCCESS MODAL & REDIRECT WA -->
+    <div x-show="successData" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" x-transition>
       <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 text-center shadow-2xl">
         <div class="w-14 h-14 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
           ✓
@@ -210,10 +393,10 @@
         
         <div class="space-y-2 pt-2">
           <a :href="successData.pdfUrl" target="_blank" class="block w-full py-2.5 bg-oceanBlue text-white font-bold text-xs rounded-xl shadow">
-            📄 Download PDF Invoice
+            📄 Download Invoice PDF Resmi
           </a>
           <button @click="redirectToWA()" class="w-full py-2.5 bg-green-500 text-white font-bold text-xs rounded-xl shadow">
-            💬 Konfirmasi ke WA Admin
+            💬 Forward Invoice ke WA Admin
           </button>
         </div>
       </div>
@@ -224,80 +407,65 @@
   <script>
     function bookingApp() {
       return {
-        initialLoading: true,
-        products: [],
-        kampusList: [],
-        bookedSlots: [],
-        config: {},
-        selectedProduct: null,
+        placeholders: CLOUDINARY_PLACEHOLDERS,
         bookingDate: '',
+        selectedCategory: '',
         selectedTime: '',
         timeSlots: [],
+        kampusList: [],
+        showFormSection: false,
+        modalTncBooking: false,
+        modalTncFoto: false,
+        consentAgreed: false,
         loading: false,
         successData: null,
         form: {
-          kampus: '', nama: '', wa: '', email: '', kotaKtp: '', domisiliJogja: '',
-          sosmed: '', jumlahOrang: 1, sumberMarketing: 'Instagram', rekamBts: 'YA'
+          kampus: '', nama: '', wa: '', email: '', kotaKtp: '', domisiliJogja: ''
         },
         fileBase64: null,
         fileName: '',
 
         initApp() {
-          if (typeof google !== 'undefined' && google.script && google.script.run) {
-            google.script.run.withSuccessHandler(res => {
-              this.loadDataSuccess(res);
-            }).getInitialData();
-          } else {
-            fetch(GAS_API_URL + "?action=getInitialData")
-              .then(res => res.json())
-              .then(res => { this.loadDataSuccess(res); })
-              .catch(() => { 
-                // Jika fetch terkendala CORS, muat fallback sampel
-                this.loadDataSuccess({
-                  config: {},
-                  products: [
-                    { kode: 'GRD1', nama: 'Ultimate Graduation 1', durasi: 45, hargaDP: 50000, hargaFull: 175000 },
-                    { kode: 'PRS1', nama: 'Personal Profile Studio', durasi: 30, hargaDP: 35000, hargaFull: 100000 },
-                    { kode: 'GRP1', nama: 'Group / Family Package', durasi: 60, hargaDP: 50000, hargaFull: 250000 }
-                  ],
-                  kampusList: [
-                    { singkatan: 'UGM', namaResmi: 'Universitas Gadjah Mada' },
-                    { singkatan: 'UNY', namaResmi: 'Universitas Negeri Yogyakarta' },
-                    { singkatan: 'UPN', namaResmi: 'UPN Veteran Yogyakarta' }
-                  ],
-                  bookedSlots: []
-                });
-              });
-          }
+          fetch(GAS_API_URL + "?action=getInitialData")
+            .then(res => res.json())
+            .then(res => {
+              this.kampusList = res.kampusList || [];
+            }).catch(() => {});
         },
 
-        loadDataSuccess(res) {
-          this.config = res.config || {};
-          this.products = res.products || [];
-          this.kampusList = res.kampusList || [];
-          this.bookedSlots = res.bookedSlots || [];
-          this.initialLoading = false;
-        },
-
-        selectProduct(p) {
-          this.selectedProduct = p;
+        onDateSelected() {
+          this.selectedCategory = '';
           this.selectedTime = '';
-          if(this.bookingDate) this.generateTimeSlots();
+          this.showFormSection = false;
+          this.generateTimeSlots();
+        },
+
+        selectCategory(catName) {
+          this.selectedCategory = catName;
+          this.selectedTime = '';
         },
 
         generateTimeSlots() {
-          if(!this.bookingDate || !this.selectedProduct) return;
           let slots = [];
           for(let h = 9; h < 20; h++) {
             for(let m of ['00', '30']) {
               let timeStr = `${String(h).padStart(2, '0')}:${m}`;
-              let isBooked = this.bookedSlots.some(b => {
-                return b.tanggal === this.bookingDate && b.jamMulai <= timeStr && b.jamSelesai > timeStr;
-              });
-              slots.push({ time: timeStr, booked: isBooked });
+              slots.push({ time: timeStr, booked: false });
             }
           }
           this.timeSlots = slots;
+        },
+
+        openTncBookingModal() {
+          this.modalTncBooking = true;
+        },
+
+        confirmTncBooking() {
+          this.modalTncBooking = false;
+          this.showFormSection = true;
+          this.$nextTick(() => {
+            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+          });
         },
 
         handleFileUpload(e) {
@@ -309,18 +477,22 @@
           reader.readAsDataURL(file);
         },
 
-        submitBooking() {
+        openTncFotoModal() {
           if(!this.form.nama || !this.form.wa || !this.form.kampus || !this.fileBase64) {
             alert("Mohon lengkapi Nama, WA, Kampus, dan Upload Bukti Transfer DP!");
             return;
           }
+          this.modalTncFoto = true;
+        },
+
+        submitFinalBooking() {
           this.loading = true;
           let payload = {
-            kodeProduk: this.selectedProduct.kode,
-            namaPaket: this.selectedProduct.nama,
-            durasiMenit: this.selectedProduct.durasi,
-            hargaFull: this.selectedProduct.hargaFull,
-            nominalDp: this.selectedProduct.hargaDP,
+            kodeProduk: this.selectedCategory.substring(0, 4).toUpperCase(),
+            namaPaket: this.selectedCategory,
+            durasiMenit: 45,
+            hargaFull: 175000,
+            nominalDp: 50000,
             tanggalFoto: this.bookingDate,
             jamFoto: this.selectedTime,
             kampusKode: this.form.kampus,
@@ -330,32 +502,28 @@
             email: this.form.email,
             kotaKtp: this.form.kotaKtp,
             domisiliJogja: this.form.domisiliJogja,
-            metodePembayaran: "BCA/DANA",
             buktiTfBase64: this.fileBase64,
             buktiTfFileName: this.fileName
           };
 
-          if (typeof google !== 'undefined' && google.script && google.script.run) {
-            google.script.run.withSuccessHandler(res => {
-              this.loading = false;
-              if(res.success) this.successData = res; else alert(res.message);
-            }).processBooking(payload);
-          } else {
-            fetch(GAS_API_URL, {
-              method: 'POST',
-              body: JSON.stringify(payload)
-            }).then(r => r.json()).then(res => {
-              this.loading = false;
-              if(res.success) this.successData = res; else alert(res.message);
-            }).catch(() => {
-              this.loading = false;
-              this.successData = {
-                bookingId: 'SMR-' + this.form.kampus + '-260819-01',
-                pdfUrl: '#',
-                waNumber: '62895372360806'
-              };
-            });
-          }
+          fetch(GAS_API_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          })
+          .then(r => r.json())
+          .then(res => {
+            this.loading = false;
+            this.modalTncFoto = false;
+            if(res.success) {
+              this.successData = res;
+            } else {
+              alert(res.message);
+            }
+          })
+          .catch(() => {
+            this.loading = false;
+            alert("Koneksi gagal. Silakan coba submit kembali.");
+          });
         },
 
         redirectToWA() {
