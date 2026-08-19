@@ -15,19 +15,78 @@
     // URL APPS SCRIPT DEPLOYMENT (EXEC)
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbynSVHqpnoijE0eoAjh79JbVYVmbVMWqofmOV3sl3jC23LLldaXaijSI4J7oSYOKA/exec";
 
-    // CLOUDINARY PLACEHOLDERS
-    const CLOUDINARY_PLACEHOLDERS = {
-      gradStudio: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=600&auto=format&fit=crop",
-      gradOutdoor: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop",
-      family: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=300&auto=format&fit=crop",
-      maternity: "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?q=80&w=300&auto=format&fit=crop",
-      prewedding: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=300&auto=format&fit=crop",
-      pasFoto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop",
-      personalBranding: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop",
-      couple: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=300&auto=format&fit=crop",
-      birthday: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=300&auto=format&fit=crop",
-      group: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=300&auto=format&fit=crop",
-      selfPhoto: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=300&auto=format&fit=crop"
+    // =========================================================================
+    // 🛠️ PUSAT KATALOG PRODUK & MEDIA (GANTI GAMBAR/HARGA TIER DI SINI)
+    // =========================================================================
+    const PRODUCT_CATALOG = {
+      "Bundling Graduation": {
+        kode: "BNDL", icon: "🎓", desc: "Kombinasi Sesi Studio Eksklusif + Sesi Outdoor Kampus.",
+        samples: [
+          "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=400&fit=crop",
+          "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&fit=crop"
+        ],
+        isOutdoor: true, isBundling: true, isPasFoto: false,
+        tiers: [
+          { level: "Level 1 (Basic)", hargaFull: 400000, dp: 100000, durasi: "90 Menit", features: ["1 Sesi Studio (45m)", "1 Sesi Outdoor (45m)", "Semua File Mentah", "5 Foto Edit"] },
+          { level: "Level 2 (Pro)", hargaFull: 650000, dp: 200000, durasi: "120 Menit", features: ["1 Sesi Studio (60m)", "1 Sesi Outdoor (60m)", "Cetak Pigura 10R", "10 Foto Edit"] },
+          { level: "Level 3 (Premium)", hargaFull: 850000, dp: 250000, durasi: "150 Menit", features: ["Cetak Album Kolase", "Video Cinematic 1 Min", "Cetak 2 Pigura 10R", "15 Foto Edit"] }
+        ]
+      },
+      "Graduation Studio": {
+        kode: "GRDS", icon: "🎓", desc: "Abadikan momen wisuda di dalam studio tematik kami.",
+        samples: ["https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=400&fit=crop"],
+        isOutdoor: false, isBundling: false, isPasFoto: false,
+        tiers: [
+          { level: "Paket 1", hargaFull: 175000, dp: 50000, durasi: "45 Menit", features: ["Maks 5 Orang", "Semua File Mentah", "3 Foto Edit"] },
+          { level: "Paket 2", hargaFull: 250000, dp: 50000, durasi: "60 Menit", features: ["Maks 8 Orang", "Cetak 10R", "5 Foto Edit"] },
+          { level: "Paket 3", hargaFull: 350000, dp: 100000, durasi: "60 Menit", features: ["Maks 15 Orang", "Cetak 2x 10R", "10 Foto Edit"] }
+        ]
+      },
+      "Graduation Outdoor": {
+        kode: "GRDO", icon: "🎓", desc: "Sesi foto wisuda langsung di spot ikonik kampus pilihanmu.",
+        samples: ["https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&fit=crop"],
+        isOutdoor: true, isBundling: false, isPasFoto: false,
+        tiers: [
+          { level: "Outdoor Basic", hargaFull: 250000, dp: 100000, durasi: "60 Menit", features: ["1 Lokasi Kampus", "Semua File Mentah", "5 Foto Edit"] },
+          { level: "Outdoor Premium", hargaFull: 400000, dp: 150000, durasi: "90 Menit", features: ["2 Lokasi Spot", "Video Reels 30s", "10 Foto Edit"] }
+        ]
+      },
+      "Pas Foto": {
+        kode: "PASF", icon: "🖼️", desc: "Pas foto ijazah, buku nikah, visa, atau keperluan formal. Proses cepat & bebas antre.",
+        samples: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&fit=crop"],
+        isOutdoor: false, isBundling: false, isPasFoto: true,
+        tiers: [
+          { level: "Express Service", hargaFull: 35000, dp: 0, durasi: "15 Menit", features: ["Bisa Ditunggu / Express", "Ganti Warna Background", "Retouching Standar", "Cetak & File Digital"] }
+        ]
+      },
+      "Family": {
+        kode: "FMLY", icon: "👨‍👩‍👧", desc: "Foto keluarga hangat penuh makna.", samples: ["https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=400&fit=crop"],
+        isOutdoor: false, isBundling: false, isPasFoto: false, tiers: [ { level: "Standard Family", hargaFull: 200000, dp: 50000, durasi: "45 Menit", features: ["Semua File Mentah", "3 Foto Edit"] } ]
+      },
+      "Maternity": {
+        kode: "MTRN", icon: "🤰", desc: "Abadikan momen kehamilan yang tak terlupakan.", samples: ["https://images.unsplash.com/photo-1555252333-9f8e92e65df9?q=80&w=400&fit=crop"],
+        isOutdoor: false, isBundling: false, isPasFoto: false, tiers: [ { level: "Maternity Intimate", hargaFull: 225000, dp: 50000, durasi: "45 Menit", features: ["2 Kostum", "5 Foto Edit"] } ]
+      },
+      "Pre Wedding": {
+        kode: "PREW", icon: "👩‍❤️‍👨", desc: "Konsep pre-wedding kasual & elegan di studio.", samples: ["https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=400&fit=crop"],
+        isOutdoor: false, isBundling: false, isPasFoto: false, tiers: [ { level: "Prewed Studio", hargaFull: 350000, dp: 100000, durasi: "90 Menit", features: ["2 Konsep Background", "10 Foto Edit"] } ]
+      },
+      "Personal Branding": {
+        kode: "PRSB", icon: "💼", desc: "Foto profil profesional untuk CV & LinkedIn.", samples: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&fit=crop"],
+        isOutdoor: false, isBundling: false, isPasFoto: false, tiers: [ { level: "Professional CV", hargaFull: 100000, dp: 50000, durasi: "30 Menit", features: ["1 Konsep Formal", "3 Foto Retouch"] } ]
+      },
+      "Couple": {
+        kode: "CPL", icon: "👩‍❤️‍💋‍👨", desc: "Abadikan momen bersama pasangan.", samples: ["https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=400&fit=crop"],
+        isOutdoor: false, isBundling: false, isPasFoto: false, tiers: [ { level: "Sweet Couple", hargaFull: 150000, dp: 50000, durasi: "30 Menit", features: ["Maks 2 Orang", "3 Foto Edit"] } ]
+      },
+      "Birth day": {
+        kode: "BTHD", icon: "🎂", desc: "Rayakan ulang tahunmu dengan sesi foto seru.", samples: ["https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=400&fit=crop"],
+        isOutdoor: false, isBundling: false, isPasFoto: false, tiers: [ { level: "Birthday Bash", hargaFull: 200000, dp: 50000, durasi: "45 Menit", features: ["Free Bawa Properti", "5 Foto Edit"] } ]
+      },
+      "Community & Group": {
+        kode: "GRUP", icon: "🌟", desc: "Foto bareng geng, komunitas, atau teman kelas.", samples: ["https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=400&fit=crop"],
+        isOutdoor: false, isBundling: false, isPasFoto: false, tiers: [ { level: "Genks Package", hargaFull: 300000, dp: 100000, durasi: "60 Menit", features: ["Maks 15 Orang", "Semua File Mentah"] } ]
+      }
     };
 
     tailwind.config = {
@@ -51,354 +110,316 @@
 
   <style>
     body { background-color: #E6F3FF; font-family: 'Poppins', sans-serif; color: #1E517B; }
-    .glassmorphism {
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-    }
+    .glassmorphism { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.9); }
+    .snap-x-mandatory { scroll-snap-type: x mandatory; }
+    .snap-center { scroll-snap-align: center; }
   </style>
 </head>
 <body x-data="bookingApp()" x-init="initApp()" class="min-h-screen bg-slate-100 flex justify-center items-start sm:py-6">
 
   <!-- MOBILE-FIRST FRAME CONTAINER -->
-  <div class="w-full max-w-md bg-gradient-to-b from-blue-50 to-oceanBg sm:rounded-3xl sm:shadow-2xl border-0 sm:border border-white/80 overflow-hidden min-h-screen sm:min-h-[840px] relative pb-16">
+  <div class="w-full max-w-md bg-gradient-to-b from-blue-50 to-oceanBg sm:rounded-3xl sm:shadow-2xl overflow-hidden relative pb-20">
 
     <!-- HEADER LOGO & STATUS STUDIO -->
-    <header class="sticky top-0 z-40 glassmorphism shadow-sm px-4 py-3.5 flex items-center justify-between border-b border-white/80">
+    <header class="sticky top-0 z-40 glassmorphism shadow-sm px-4 py-3 flex items-center justify-between border-b border-white">
       <div class="flex items-center space-x-3">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-oceanBlue via-blue-400 to-cutePink flex items-center justify-center font-bold text-2xl text-white shadow-md border border-white">
-          S
-        </div>
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-oceanBlue to-cutePink flex items-center justify-center font-bold text-xl text-white shadow-md">S</div>
         <div>
-          <h1 class="text-sm font-bold leading-tight text-oceanPrimary tracking-wide">Sunmore Photo Studio</h1>
-          <p class="text-[11px] text-gray-500 font-medium">Jl. Dworowati No.11, Sleman</p>
+          <h1 class="text-sm font-bold leading-tight text-oceanPrimary tracking-wide">Sunmore Studio</h1>
+          <p class="text-[10px] text-gray-500 font-medium">Reservasi Mandiri</p>
         </div>
       </div>
-      <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-300 flex items-center space-x-1 shadow-sm">
-        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-        <span>OPEN</span>
-      </span>
+      <button @click="view = 'home'" x-show="view !== 'home'" class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-bold shadow-sm">🏠 Beranda</button>
     </header>
 
     <main class="px-4 pt-4 space-y-5">
 
-      <!-- WELCOMING HERO BANNER -->
-      <div class="relative rounded-2xl overflow-hidden shadow-sm glassmorphism p-3.5 text-center border-l-4 border-oceanBlue">
-        <h2 class="text-xs font-bold text-oceanPrimary">Sistem Reservasi Mandiri Online ✨</h2>
-        <p class="text-[11px] text-gray-600 mt-0.5">Pilih tanggal untuk melihat jadwal slot foto yang tersedia.</p>
+      <!-- ========================================== -->
+      <!-- VIEW 1: HOME (GRID KATEGORI PRODUK)          -->
+      <!-- ========================================== -->
+      <div x-show="view === 'home'" x-transition class="space-y-5">
+        
+        <div class="relative rounded-2xl overflow-hidden shadow-sm glassmorphism p-3.5 text-center border-l-4 border-oceanBlue">
+          <h2 class="text-xs font-bold text-oceanPrimary">Pilih Kategori Foto Pilihanmu ✨</h2>
+        </div>
+
+        <!-- SPECIAL BUNDLING & GRADUATION (GRID 2 KOTAK BESAR & BANNER) -->
+        <section class="space-y-2">
+          <div @click="openProduct('Bundling Graduation')" class="h-28 rounded-2xl overflow-hidden shadow-md cursor-pointer transition relative border-2 border-ctaCoral">
+            <img :src="catalog['Bundling Graduation'].samples[0]" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-3 flex flex-col justify-end">
+              <span class="text-[9px] font-extrabold bg-ctaCoral text-white px-2 py-0.5 rounded-md w-max mb-1">HOT OFFER</span>
+              <h4 class="text-sm font-bold text-white">Bundling (Studio + Outdoor)</h4>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div @click="openProduct('Graduation Studio')" class="h-32 rounded-2xl overflow-hidden shadow-sm cursor-pointer relative group border border-white">
+              <img :src="catalog['Graduation Studio'].samples[0]" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-oceanPrimary/90 to-transparent p-3 flex flex-col justify-end">
+                <span class="text-[9px] font-bold bg-cutePink text-oceanPrimary px-2 py-0.5 rounded w-max mb-1">STUDIO</span>
+                <h4 class="text-xs font-bold text-white">Graduation Studio</h4>
+              </div>
+            </div>
+            <div @click="openProduct('Graduation Outdoor')" class="h-32 rounded-2xl overflow-hidden shadow-sm cursor-pointer relative group border border-white">
+              <img :src="catalog['Graduation Outdoor'].samples[0]" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-oceanPrimary/90 to-transparent p-3 flex flex-col justify-end">
+                <span class="text-[9px] font-bold bg-oceanSoft text-oceanPrimary px-2 py-0.5 rounded w-max mb-1">OUTDOOR</span>
+                <h4 class="text-xs font-bold text-white">Graduation Outdoor</h4>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- KATEGORI LAINNYA (GRID 3x3 COMPACT) -->
+        <section class="grid grid-cols-3 gap-2">
+          <template x-for="cat in ['Family', 'Maternity', 'Pre Wedding', 'Pas Foto', 'Personal Branding', 'Couple', 'Birth day', 'Community & Group']" :key="cat">
+            <div @click="openProduct(cat)" class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer hover:bg-white flex flex-col items-center border border-white">
+              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5"><img :src="catalog[cat].samples[0]" class="w-full h-full object-cover"></div>
+              <h4 class="text-[10px] font-bold text-center text-oceanPrimary leading-tight" x-text="cat"></h4>
+            </div>
+          </template>
+        </section>
       </div>
 
-      <!-- TAHAP 1: TOMBOL PILIHAN TANGGAL FOTO (PEMICU SYNC BACKEND) -->
-      <section class="glassmorphism p-4 rounded-2xl shadow-sm border border-white space-y-2">
-        <div class="flex items-center justify-between">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-oceanPrimary flex items-center space-x-1">
-            <span>📅</span> <span>Langkah 1: Tentukan Tanggal Foto</span>
-          </h3>
-          <span x-show="bookingDate" class="text-[10px] bg-green-500 text-white px-2 py-0.5 rounded-full font-bold">✓ Terpilih</span>
+      <!-- ========================================== -->
+      <!-- VIEW 2: PRODUCT DETAIL & RINCIAN TIER       -->
+      <!-- ========================================== -->
+      <div x-show="view === 'detail'" x-transition class="space-y-4">
+        <h2 class="text-lg font-bold text-oceanPrimary border-b border-oceanSoft pb-2 flex items-center space-x-2">
+          <span x-text="selectedData.icon"></span> <span x-text="selectedCatName"></span>
+        </h2>
+        <p class="text-xs text-gray-600 leading-relaxed" x-text="selectedData.desc"></p>
+
+        <!-- Gallery Snap Samples -->
+        <div class="flex space-x-2 overflow-x-auto snap-x-mandatory pb-2">
+          <template x-for="img in selectedData.samples" :key="img">
+            <img :src="img" class="w-64 h-40 object-cover rounded-xl shadow-sm snap-center flex-shrink-0">
+          </template>
         </div>
-        
-        <input type="date" x-model="bookingDate" @change="onDateSelected()" 
-               class="w-full text-xs font-semibold p-3 rounded-xl border border-oceanSoft focus:ring-2 focus:ring-oceanBlue outline-none bg-white text-oceanPrimary shadow-sm">
-        <p x-show="!bookingDate" class="text-[10px] text-amber-600 font-medium">Silakan pilih tanggal foto terlebih dahulu untuk mengaktifkan pilihan paket.</p>
-      </section>
 
-      <!-- TAHAP 2: PILIHAN PRODUK (AKTIFF SETELAH TANGGAL DIPILIH) -->
-      <div x-show="bookingDate" class="space-y-5" x-transition>
-
-        <!-- A. SPECIAL GRADUATION PACKAGES (GRID 2 KOTAK BESAR) -->
-        <section class="space-y-2">
-          <h3 class="text-[11px] font-bold uppercase tracking-wider text-oceanPrimary flex items-center space-x-1">
-            <span>🎓</span> <span>Special Graduation Packages</span>
-          </h3>
-          
-          <div class="grid grid-cols-2 gap-3">
-            <!-- Graduation Studio Card -->
-            <div @click="selectCategory('Graduation Studio')" 
-                 :class="selectedCategory === 'Graduation Studio' ? 'ring-2 ring-ctaCoral scale-[1.02]' : 'hover:opacity-95'"
-                 class="relative h-36 rounded-2xl overflow-hidden shadow-md cursor-pointer transition transform group border border-white">
-              <img :src="placeholders.gradStudio" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-              <div class="absolute inset-0 bg-gradient-to-t from-oceanPrimary/90 via-oceanPrimary/30 to-transparent p-3 flex flex-col justify-end">
-                <span class="text-[9px] font-extrabold bg-cutePink text-oceanPrimary px-2 py-0.5 rounded-md w-max mb-1">STUDIO</span>
-                <h4 class="text-xs font-bold text-white leading-tight">Graduation Studio</h4>
-                <p class="text-[10px] text-blue-100">Mulai Rp 175rb</p>
-              </div>
-            </div>
-
-            <!-- Graduation Outdoor Card -->
-            <div @click="selectCategory('Graduation Outdoor')" 
-                 :class="selectedCategory === 'Graduation Outdoor' ? 'ring-2 ring-ctaCoral scale-[1.02]' : 'hover:opacity-95'"
-                 class="relative h-36 rounded-2xl overflow-hidden shadow-md cursor-pointer transition transform group border border-white">
-              <img :src="placeholders.gradOutdoor" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-              <div class="absolute inset-0 bg-gradient-to-t from-oceanPrimary/90 via-oceanPrimary/30 to-transparent p-3 flex flex-col justify-end">
-                <span class="text-[9px] font-extrabold bg-oceanSoft text-oceanPrimary px-2 py-0.5 rounded-md w-max mb-1">OUTDOOR</span>
-                <h4 class="text-xs font-bold text-white leading-tight">Graduation Outdoor</h4>
-                <p class="text-[10px] text-blue-100">Mulai Rp 250rb</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- B. KATEGORI FOTO STUDIO (GRID 3x3) -->
-        <section class="space-y-2">
-          <h3 class="text-[11px] font-bold uppercase tracking-wider text-oceanPrimary flex items-center space-x-1">
-            <span>✨</span> <span>Kategori Foto Studio</span>
-          </h3>
-
-          <div class="grid grid-cols-3 gap-2">
-
-            <!-- 1. Family -->
-            <div @click="selectCategory('Family')" 
-                 :class="selectedCategory === 'Family' ? 'ring-2 ring-ctaCoral' : ''"
-                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
-              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
-                <img :src="placeholders.family" class="w-full h-full object-cover">
-              </div>
-              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Family</h4>
-            </div>
-
-            <!-- 2. Maternity -->
-            <div @click="selectCategory('Maternity')" 
-                 :class="selectedCategory === 'Maternity' ? 'ring-2 ring-ctaCoral' : ''"
-                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
-              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
-                <img :src="placeholders.maternity" class="w-full h-full object-cover">
-              </div>
-              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Maternity</h4>
-            </div>
-
-            <!-- 3. Pre Wedding -->
-            <div @click="selectCategory('Pre Wedding')" 
-                 :class="selectedCategory === 'Pre Wedding' ? 'ring-2 ring-ctaCoral' : ''"
-                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
-              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
-                <img :src="placeholders.prewedding" class="w-full h-full object-cover">
-              </div>
-              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Pre Wedding</h4>
-            </div>
-
-            <!-- 4. Pas Foto -->
-            <div @click="selectCategory('Pas Foto')" 
-                 :class="selectedCategory === 'Pas Foto' ? 'ring-2 ring-ctaCoral' : ''"
-                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
-              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
-                <img :src="placeholders.pasFoto" class="w-full h-full object-cover">
-              </div>
-              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Pas Foto</h4>
-            </div>
-
-            <!-- 5. Personal Branding -->
-            <div @click="selectCategory('Personal Branding')" 
-                 :class="selectedCategory === 'Personal Branding' ? 'ring-2 ring-ctaCoral' : ''"
-                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
-              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
-                <img :src="placeholders.personalBranding" class="w-full h-full object-cover">
-              </div>
-              <h4 class="text-[10px] font-bold text-oceanPrimary leading-tight">Personal Branding</h4>
-            </div>
-
-            <!-- 6. Couple -->
-            <div @click="selectCategory('Couple')" 
-                 :class="selectedCategory === 'Couple' ? 'ring-2 ring-ctaCoral' : ''"
-                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
-              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
-                <img :src="placeholders.couple" class="w-full h-full object-cover">
-              </div>
-              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Couple</h4>
-            </div>
-
-            <!-- 7. Birth day -->
-            <div @click="selectCategory('Birth day')" 
-                 :class="selectedCategory === 'Birth day' ? 'ring-2 ring-ctaCoral' : ''"
-                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
-              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
-                <img :src="placeholders.birthday" class="w-full h-full object-cover">
-              </div>
-              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Birth day</h4>
-            </div>
-
-            <!-- 8. Group -->
-            <div @click="selectCategory('Group')" 
-                 :class="selectedCategory === 'Group' ? 'ring-2 ring-ctaCoral' : ''"
-                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
-              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
-                <img :src="placeholders.group" class="w-full h-full object-cover">
-              </div>
-              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Group / Genks</h4>
-            </div>
-
-            <!-- 9. Self Photo -->
-            <div @click="selectCategory('Self Photo')" 
-                 :class="selectedCategory === 'Self Photo' ? 'ring-2 ring-ctaCoral' : ''"
-                 class="glassmorphism p-2 rounded-2xl shadow-sm cursor-pointer transition text-center hover:bg-white border border-white flex flex-col items-center">
-              <div class="w-12 h-12 rounded-xl overflow-hidden mb-1.5 shadow-sm">
-                <img :src="placeholders.selfPhoto" class="w-full h-full object-cover">
-              </div>
-              <h4 class="text-[11px] font-bold text-oceanPrimary leading-tight">Self Photo</h4>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- JAM OPERASIONAL AVAILABLE (+5 MIN BUFFER) -->
-        <section x-show="selectedCategory" class="glassmorphism p-4 rounded-2xl shadow-sm space-y-3 border border-white" x-transition>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-oceanPrimary">⏰ Pilih Jam Sesi Foto Available</h3>
-          <div class="grid grid-cols-4 gap-1.5 max-h-40 overflow-y-auto">
-            <template x-for="slot in timeSlots" :key="slot.time">
-              <button @click="if(!slot.booked) selectedTime = slot.time"
-                      :disabled="slot.booked"
-                      :class="{
-                        'bg-gray-200 text-gray-400 cursor-not-allowed line-through': slot.booked,
-                        'bg-ctaCoral text-white font-bold shadow-md': selectedTime === slot.time,
-                        'bg-white text-oceanPrimary border border-oceanSoft hover:bg-oceanSoft': !slot.booked && selectedTime !== slot.time
-                      }"
-                      class="py-2 text-xs rounded-xl transition text-center font-semibold">
-                <span x-text="slot.time"></span>
-              </button>
-            </template>
-          </div>
-
-          <!-- TOMBOL PENERUS MUNCULKAN POP-UP TNC PETUNJUK RESERVASI -->
-          <div x-show="selectedTime" class="pt-2">
-            <button @click="openTncBookingModal()" 
-                    class="w-full py-3 bg-oceanBlue hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow-md transition transform active:scale-98 flex justify-center items-center space-x-2">
-              <span>Lanjutkan Reservasi Paket Ini</span>
-              <span>➔</span>
+        <!-- BILA KHUSUS PAS FOTO: DITAMPILKAN TOMBOL DIRECT WA CHAT -->
+        <template x-if="selectedData.isPasFoto">
+          <div class="p-4 bg-green-50 border border-green-200 rounded-2xl space-y-3">
+            <h3 class="text-xs font-bold text-green-800">Layanan Pas Foto Express Studio</h3>
+            <p class="text-[11px] text-gray-600">Untuk Pas Foto, Anda tidak perlu mengisi formulir panjang. Silakan langsung hubungi Admin untuk konsultasi warna background, ukuran cetak, dan waktu kedatangan.</p>
+            <button @click="directWaPasFoto()" class="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold text-xs rounded-xl shadow-md flex justify-center items-center space-x-2">
+              <span>💬 Chat Admin Fast Response (Konsultasi Pas Foto)</span>
             </button>
           </div>
-        </section>
+        </template>
 
+        <!-- BILA BUKAN PAS FOTO: TAMPILKAN TABEL TIER / LEVEL HORIZONTAL -->
+        <template x-if="!selectedData.isPasFoto">
+          <div class="space-y-3">
+            <div class="flex space-x-3 overflow-x-auto snap-x-mandatory pb-4">
+              <template x-for="(tier, index) in selectedData.tiers" :key="index">
+                <div @click="selectTier(tier)" 
+                     :class="selectedTier.level === tier.level ? 'ring-2 ring-oceanBlue bg-blue-50 border-oceanBlue' : 'border-gray-200 bg-white'"
+                     class="w-56 flex-shrink-0 p-4 rounded-2xl shadow-sm cursor-pointer border snap-center flex flex-col justify-between">
+                  <div>
+                    <h3 class="text-sm font-bold text-oceanPrimary" x-text="tier.level"></h3>
+                    <p class="text-[10px] text-gray-500 mb-2">Durasi: <span x-text="tier.durasi"></span></p>
+                    <ul class="text-[10px] text-gray-700 space-y-1 mb-4">
+                      <template x-for="feat in tier.features" :key="feat">
+                        <li class="flex items-start"><span class="text-green-500 mr-1">✓</span> <span x-text="feat"></span></li>
+                      </template>
+                    </ul>
+                  </div>
+                  <div>
+                    <p class="text-lg font-bold text-ctaCoral mb-1">Rp <span x-text="Number(tier.hargaFull).toLocaleString('id-ID')"></span></p>
+                    <div class="text-[10px] bg-oceanSoft text-oceanPrimary px-2 py-1 rounded text-center font-bold">DP: Rp <span x-text="Number(tier.dp).toLocaleString('id-ID')"></span></div>
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <!-- Tombol Lanjut (Kondisional: Jika Outdoor/Bundling langsung ke Form, jika Studio ke Jadwal) -->
+            <button x-show="selectedTier.level" @click="proceedFromDetail()" class="w-full py-3.5 bg-oceanPrimary hover:bg-blue-900 text-white font-bold rounded-xl shadow-md transition">
+              <span x-text="(selectedData.isOutdoor || selectedData.isBundling) ? 'Lanjut Isi Form Booking ➔' : 'Lanjut Pilih Jadwal ➔'"></span>
+            </button>
+          </div>
+        </template>
       </div>
 
-      <!-- SECTION FORMULIR ISIAN DATA KLIEN (MUNCUL SETELAH TNC PETUNJUK DISETUJUI) -->
-      <section x-show="showFormSection" id="formSection" class="glassmorphism p-4 rounded-2xl shadow-sm border border-white space-y-3" x-transition>
-        <h3 class="text-xs font-bold uppercase tracking-wider text-oceanPrimary border-b border-oceanSoft pb-2">
-          📝 Langkah 3: Formulir Data Pemesan
-        </h3>
+      <!-- ========================================== -->
+      <!-- VIEW 3: PILIH JADWAL (KHUSUS STUDIO REGULER) -->
+      <!-- ========================================== -->
+      <div x-show="view === 'schedule'" x-transition class="space-y-4 glassmorphism p-4 rounded-2xl">
+        <h3 class="text-xs font-bold text-oceanPrimary border-b pb-2">Pilih Jadwal Sesi Studio (<span x-text="selectedCatName"></span> - <span x-text="selectedTier.level"></span>)</h3>
+        
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">Tanggal Sesi Foto</label>
+          <input type="date" x-model="bookingDate" @change="generateTimeSlots()" class="w-full text-xs p-3 rounded-xl border focus:ring-2 focus:ring-oceanBlue outline-none bg-white font-bold text-oceanPrimary">
+        </div>
 
-        <div class="space-y-2.5 text-xs">
-          <div>
-            <label class="block text-gray-700 font-medium mb-1">Kampus / Instansi</label>
-            <select x-model="form.kampus" class="w-full p-2.5 rounded-xl border border-oceanSoft bg-white outline-none">
-              <option value="">-- Pilih Kampus / Instansi --</option>
-              <template x-for="k in kampusList" :key="k.singkatan">
-                <option :value="k.singkatan" x-text="`${k.singkatan} - ${k.namaResmi}`"></option>
-              </template>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-gray-700 font-medium mb-1">Nama Lengkap Pemesan</label>
-            <input type="text" x-model="form.nama" placeholder="Sesuai KTP / Nama Panggilan" class="w-full p-2.5 rounded-xl border border-oceanSoft bg-white outline-none">
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-gray-700 font-medium mb-1">No. WhatsApp</label>
-              <input type="number" x-model="form.wa" placeholder="08123456789" class="w-full p-2.5 rounded-xl border border-oceanSoft bg-white outline-none">
-            </div>
-            <div>
-              <label class="block text-gray-700 font-medium mb-1">Email Aktif</label>
-              <input type="email" x-model="form.email" placeholder="nama@gmail.com" class="w-full p-2.5 rounded-xl border border-oceanSoft bg-white outline-none">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-gray-700 font-medium mb-1">Kota Asal (KTP)</label>
-              <input type="text" x-model="form.kotaKtp" placeholder="Contoh: Jakarta" class="w-full p-2.5 rounded-xl border border-oceanSoft bg-white outline-none">
-            </div>
-            <div>
-              <label class="block text-gray-700 font-medium mb-1">Domisili Jogja</label>
-              <input type="text" x-model="form.domisiliJogja" placeholder="Contoh: Seturan" class="w-full p-2.5 rounded-xl border border-oceanSoft bg-white outline-none">
-            </div>
-          </div>
-
-          <div class="pt-2 border-t border-oceanSoft/60">
-            <label class="block text-gray-700 font-medium mb-1">Upload Bukti Transfer DP (BCA / DANA)</label>
-            <input type="file" @change="handleFileUpload($event)" accept="image/*" class="w-full text-xs text-gray-500 bg-white p-2 rounded-xl border border-oceanSoft">
+        <div x-show="bookingDate">
+          <label class="block text-xs font-medium text-gray-700 mb-1.5">Pilih Jam Available (+5m buffer)</label>
+          <div class="grid grid-cols-4 gap-1.5 max-h-40 overflow-y-auto">
+            <template x-for="slot in timeSlots" :key="slot.time">
+              <button @click="if(!slot.booked) selectedTime = slot.time" :disabled="slot.booked"
+                      :class="slot.booked ? 'bg-gray-200 text-gray-400 line-through' : (selectedTime === slot.time ? 'bg-ctaCoral text-white' : 'bg-white border hover:bg-gray-50')"
+                      class="py-2 text-xs rounded-xl font-bold shadow-sm"><span x-text="slot.time"></span></button>
+            </template>
           </div>
         </div>
 
-        <!-- TOMBOL SUBMIT UNTUK MEMUNCULKAN POP-UP TNC PROSES FOTO -->
-        <div class="pt-2">
-          <button @click="openTncFotoModal()" 
-                  class="w-full py-3.5 bg-ctaCoral hover:bg-orange-600 text-white font-bold rounded-2xl shadow-lg transition transform active:scale-95 flex justify-center items-center space-x-2">
-            <span>🚀 SUBMIT DATA BOOKING</span>
-          </button>
+        <button x-show="selectedTime" @click="view = 'form'; scrollToTop()" class="w-full mt-4 py-3 bg-oceanBlue text-white font-bold rounded-xl shadow">Lengkapi Data Form ➔</button>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 4: FORMULIR ISIAN DATA BOOKING          -->
+      <!-- ========================================== -->
+      <div x-show="view === 'form'" x-transition class="space-y-4">
+        
+        <!-- Rangkuman Keranjang -->
+        <div class="bg-oceanPrimary text-white p-4 rounded-2xl shadow-md text-xs">
+          <p class="font-bold text-sm mb-1" x-text="selectedCatName + ' - ' + selectedTier.level"></p>
+          <p class="opacity-80" x-show="bookingDate">Jadwal Sesi Studio: <span class="font-bold" x-text="bookingDate + (selectedTime ? ' @ ' + selectedTime + ' WIB' : '')"></span></p>
+          <p class="opacity-80">Total Tagihan: <span class="font-bold">Rp <span x-text="Number(selectedTier.hargaFull).toLocaleString('id-ID')"></span></span></p>
+          <div class="mt-2 bg-white/20 p-2 rounded text-center font-bold">Wajib Transfer DP: Rp <span x-text="Number(selectedTier.dp).toLocaleString('id-ID')"></span></div>
         </div>
-      </section>
+
+        <div class="glassmorphism p-4 rounded-2xl space-y-3">
+          <!-- Form Fields -->
+          <div class="space-y-2.5 text-xs">
+            <div><label class="block font-medium mb-1">Paket Terpilih</label><input type="text" disabled :value="selectedCatName + ' (' + selectedTier.level + ')'" class="w-full p-2.5 rounded-xl border bg-gray-100 text-gray-600 font-bold"></div>
+            
+            <!-- Conditional Field: Outdoor / Bundling -->
+            <template x-if="selectedData.isOutdoor || selectedData.isBundling">
+              <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl space-y-2">
+                <div>
+                  <label class="block font-bold text-oceanPrimary mb-1">Target Lokasi / Spot Outdoor <span class="text-red-500">*</span></label>
+                  <input type="text" x-model="form.lokasiOutdoor" placeholder="Sebutkan spot kampus (UGM, UNY, UPN, dll)..." class="w-full p-2 rounded border outline-none">
+                </div>
+                <div>
+                  <label class="block font-bold text-oceanPrimary mb-1">Tanggal Usulan Sesi Outdoor <span class="text-red-500">*</span></label>
+                  <input type="date" x-model="bookingDate" class="w-full p-2 rounded border outline-none font-bold bg-white">
+                </div>
+                <template x-if="selectedData.isBundling">
+                  <div>
+                    <label class="block font-bold text-oceanPrimary mb-1">Jam Usulan Sesi Studio (Bundling)</label>
+                    <input type="time" x-model="selectedTime" class="w-full p-2 rounded border outline-none font-bold bg-white">
+                  </div>
+                </template>
+              </div>
+            </template>
+
+            <div><label class="block font-medium mb-1">Nama Lengkap</label><input type="text" x-model="form.nama" class="w-full p-2.5 rounded-xl border outline-none"></div>
+            <div class="grid grid-cols-2 gap-2">
+              <div><label class="block font-medium mb-1">No. WhatsApp</label><input type="number" x-model="form.wa" class="w-full p-2.5 rounded-xl border outline-none"></div>
+              <div><label class="block font-medium mb-1">Jumlah Orang</label><input type="number" x-model="form.jmlOrang" value="1" class="w-full p-2.5 rounded-xl border outline-none"></div>
+            </div>
+            <div><label class="block font-medium mb-1">Email</label><input type="email" x-model="form.email" class="w-full p-2.5 rounded-xl border outline-none"></div>
+            
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-medium mb-1">Kampus/Instansi</label>
+                <select x-model="form.kampus" class="w-full p-2.5 rounded-xl border outline-none">
+                  <option value="">-- Pilih --</option>
+                  <template x-for="k in kampusList" :key="k.singkatan"><option :value="k.singkatan" x-text="k.singkatan"></option></template>
+                  <option value="UMUM">Umum / Lainnya</option>
+                </select>
+              </div>
+              <div><label class="block font-medium mb-1">Kota Asal (KTP)</label><input type="text" x-model="form.kotaKtp" class="w-full p-2.5 rounded-xl border outline-none"></div>
+            </div>
+            <div><label class="block font-medium mb-1">Alamat Domisili Jogja</label><input type="text" x-model="form.domisiliJogja" class="w-full p-2.5 rounded-xl border outline-none"></div>
+            
+            <div class="grid grid-cols-2 gap-2">
+              <div><label class="block font-medium mb-1">Akun Sosmed IG</label><input type="text" x-model="form.sosmed" placeholder="@username" class="w-full p-2.5 rounded-xl border outline-none"></div>
+              <div>
+                <label class="block font-medium mb-1">Tau Kami Dari?</label>
+                <select x-model="form.sumber" class="w-full p-2.5 rounded-xl border outline-none">
+                  <option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="Teman/Rekomendasi">Teman</option><option value="Google Maps">Google Maps</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium mb-1">Sesi Foto Direkam Untuk Konten IG/Story?</label>
+              <select x-model="form.rekamBts" class="w-full p-2.5 rounded-xl border bg-blue-50 text-oceanPrimary font-bold outline-none">
+                <option value="SETUJU">Ya, Setuju direkam & diupload</option>
+                <option value="TIDAK">Tidak, untuk privasi</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Section Rekening BCA/DANA & Upload DP -->
+          <div class="mt-4 p-4 border-2 border-dashed border-oceanBlue rounded-2xl bg-blue-50/50">
+            <h4 class="text-xs font-bold text-oceanPrimary mb-2">Instruksi Pembayaran DP</h4>
+            <div class="flex items-center justify-between bg-white p-2 rounded-xl border shadow-sm mb-2">
+              <div><p class="text-[10px] text-gray-500">BCA a.n Sunmore Studio</p><p class="text-sm font-bold text-oceanPrimary">1234567890</p></div>
+              <button @click="copyRek('1234567890')" class="bg-gray-100 p-2 rounded-lg text-xs font-bold hover:bg-gray-200">📋 Salin</button>
+            </div>
+            <div class="flex items-center justify-between bg-white p-2 rounded-xl border shadow-sm mb-3">
+              <div><p class="text-[10px] text-gray-500">DANA</p><p class="text-sm font-bold text-oceanPrimary">0895372360806</p></div>
+              <button @click="copyRek('0895372360806')" class="bg-gray-100 p-2 rounded-lg text-xs font-bold hover:bg-gray-200">📋 Salin</button>
+            </div>
+            
+            <label class="block text-xs font-medium text-gray-700 mb-1">Upload Bukti Transfer DP <span class="text-red-500">*</span></label>
+            <input type="file" @change="handleFileUpload($event)" accept="image/*" class="w-full text-xs p-2 bg-white rounded-xl border">
+          </div>
+
+          <button @click="openTncModal()" class="w-full mt-3 py-3.5 bg-ctaCoral text-white font-bold rounded-xl shadow-lg">Lanjutkan Verifikasi ➔</button>
+        </div>
+      </div>
 
     </main>
 
-    <!-- POP-UP 1: TNC & PETUNJUK RESERVASI (SEBELUM DITERAHPKAN FORM) -->
-    <div x-show="modalTncBooking" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" x-transition>
-      <div class="bg-white rounded-3xl p-5 max-w-sm w-full space-y-3 text-left shadow-2xl border border-white">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-          <h3 class="text-xs font-bold text-oceanPrimary flex items-center space-x-1">
-            <span>📌</span> <span>Petunjuk & Ketentuan Reservasi</span>
-          </h3>
-          <button @click="modalTncBooking = false" class="text-gray-400 font-bold">✕</button>
-        </div>
-        <div class="text-[11px] text-gray-600 space-y-2 max-h-52 overflow-y-auto pr-1">
-          <p><b>1. Uang Muka (DP):</b> Reservasi hanya dianggap SAH setelah mengunggah bukti transfer DP resmi.</p>
-          <p><b>2. Toleransi Keterlambatan:</b> Harap hadir 10 menit sebelum jam sesi foto. Keterlambatan akan mengurangi durasi foto Anda.</p>
-          <p><b>3. Kebijakan Reschedule:</b> Perubahan jadwal maksimal diinformasikan H-2 dari tanggal sesi foto.</p>
-        </div>
-        <button @click="confirmTncBooking()" class="w-full py-2.5 bg-oceanBlue text-white font-bold text-xs rounded-xl shadow">
-          Saya Paham & Lanjutkan Isi Data ➔
-        </button>
-      </div>
-    </div>
-
-    <!-- POP-UP 2: TNC PROSES FOTO & CHECKLIST PERSETUJUAN (SEBELUM INTI SUBMIT) -->
-    <div x-show="modalTncFoto" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" x-transition>
-      <div class="bg-white rounded-3xl p-5 max-w-sm w-full space-y-3 text-left shadow-2xl border border-white">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-          <h3 class="text-xs font-bold text-oceanPrimary flex items-center space-x-1">
-            <span>📸</span> <span>Ketentuan Proses Foto Studio</span>
-          </h3>
-          <button @click="modalTncFoto = false" class="text-gray-400 font-bold">✕</button>
-        </div>
-        <div class="text-[11px] text-gray-600 space-y-2 max-h-48 overflow-y-auto pr-1">
-          <p><b>1. Edit Foto:</b> Pengeditan melingkupi warna & retouching standar Sunmore Studio.</p>
-          <p><b>2. Hasil Master File:</b> Tautan Google Drive foto akan dikirimkan maksimal H+2 setelah foto.</p>
-          <p><b>3. Hak Cipta & Konten:</b> Pihak studio dapat menampilkan hasil karya foto untuk keperluan portofolio kecuali ada perjanjian persetujuan tertulis.</p>
-        </div>
-
-        <div class="pt-2 border-t border-gray-100 flex items-start space-x-2">
-          <input type="checkbox" id="checkConsent" x-model="consentAgreed" class="mt-0.5 rounded text-ctaCoral focus:ring-ctaCoral">
-          <label for="checkConsent" class="text-[10px] text-gray-700 font-medium">Saya telah membaca, memahami, dan menyetujui seluruh ketentuan proses foto di Sunmore Studio.</label>
-        </div>
-
-        <button @click="submitFinalBooking()" 
-                :disabled="!consentAgreed || loading"
-                :class="!consentAgreed || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-ctaCoral hover:bg-orange-600'"
-                class="w-full py-3 text-white font-bold text-xs rounded-xl shadow transition flex justify-center items-center space-x-2">
-          <span x-show="!loading">🚀 SETUJU & KONFIRMASI BOOKING</span>
-          <span x-show="loading" class="animate-spin text-sm">🌀</span>
-          <span x-show="loading">Memproses PDF & Data...</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- POP-UP 3: INVOICE SUCCESS MODAL & REDIRECT WA -->
-    <div x-show="successData" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" x-transition>
-      <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 text-center shadow-2xl">
-        <div class="w-14 h-14 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
-          ✓
-        </div>
-        <h3 class="text-base font-bold text-oceanPrimary">Booking Berhasil! 🎉</h3>
-        <p class="text-xs text-gray-600">Kode Booking Anda: <br><b class="text-sm text-oceanBlue" x-text="successData.bookingId"></b></p>
+    <!-- POP UP TNC LENGKAP (A, B, C) -->
+    <div x-show="modalTnc" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl p-5 max-w-sm w-full space-y-3 text-left shadow-2xl">
+        <h3 class="text-xs font-bold text-oceanPrimary border-b pb-2">📋 Syarat & Ketentuan Studio</h3>
         
-        <div class="space-y-2 pt-2">
-          <a :href="successData.pdfUrl" target="_blank" class="block w-full py-2.5 bg-oceanBlue text-white font-bold text-xs rounded-xl shadow">
-            📄 Download Invoice PDF Resmi
-          </a>
-          <button @click="redirectToWA()" class="w-full py-2.5 bg-green-500 text-white font-bold text-xs rounded-xl shadow">
-            💬 Forward Invoice ke WA Admin
-          </button>
+        <div class="text-[10px] text-gray-700 space-y-3 max-h-60 overflow-y-auto pr-2 leading-relaxed">
+          <div>
+            <p class="font-bold text-oceanPrimary">📑 A. Ketentuan Booking</p>
+            <ul class="list-disc pl-3">
+              <li>Reservasi terkonfirmasi setelah DP dibayarkan.</li>
+              <li>DP tidak dapat dikembalikan (non-refundable) untuk pembatalan sepihak, namun bisa untuk reschedule.</li>
+              <li>Reschedule maksimal H-7 sebelum sesi foto. Hanya berlaku 1x dalam 30 hari.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-bold text-oceanPrimary">🕰️ B. Ketentuan Hari H</p>
+            <ul class="list-disc pl-3">
+              <li>Durasi foto dihitung tepat dari jam booking awal. Keterlambatan memotong durasi foto Anda.</li>
+              <li>Seluruh file foto (raw) diberikan maksimal H+1.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-bold text-oceanPrimary">🖼️ C. Ketentuan After Sesi</p>
+            <ul class="list-disc pl-3">
+              <li>File di G-Drive disimpan 31 hari. Mohon segera unduh.</li>
+              <li>Proses editing 3-5 hari kerja setelah list diserahkan. Meliputi tone/warna standar.</li>
+              <li>Studio berhak menggunakan hasil foto untuk portofolio IG kecuali ada perjanjian khusus.</li>
+            </ul>
+          </div>
         </div>
+
+        <div class="pt-2 border-t flex items-start space-x-2">
+          <input type="checkbox" id="checkTnc" x-model="consentAgreed" class="mt-0.5 rounded text-oceanBlue">
+          <label for="checkTnc" class="text-[10px] font-medium text-gray-800">Saya menyetujui seluruh S&K Sunmore Studio.</label>
+        </div>
+
+        <button @click="submitFinal()" :disabled="!consentAgreed || loading"
+                :class="(!consentAgreed || loading) ? 'bg-gray-300' : 'bg-green-500 hover:bg-green-600'"
+                class="w-full py-3 text-white font-bold text-xs rounded-xl shadow transition flex justify-center items-center">
+          <span x-show="!loading">KIRIM DATA & BOOKING SEKARANG</span>
+          <span x-show="loading" class="animate-spin text-sm mr-2">🌀</span>
+          <span x-show="loading">Memproses...</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- POP UP SUCCESS INVOICE -->
+    <div x-show="successData" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl">
+        <div class="w-14 h-14 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-3">✓</div>
+        <h3 class="text-base font-bold text-oceanPrimary mb-1">Hore! Booking Berhasil 🎉</h3>
+        <p class="text-xs text-gray-600 mb-4">Kode: <b class="text-oceanBlue" x-text="successData.bookingId"></b></p>
+        <a :href="successData.pdfUrl" target="_blank" class="block w-full py-2.5 mb-2 bg-oceanBlue text-white font-bold text-xs rounded-xl">📄 Download Invoice PDF</a>
+        <button @click="redirectToWA()" class="w-full py-2.5 bg-green-500 text-white font-bold text-xs rounded-xl">💬 Teruskan ke WA Admin</button>
       </div>
     </div>
 
@@ -407,135 +428,82 @@
   <script>
     function bookingApp() {
       return {
-        placeholders: CLOUDINARY_PLACEHOLDERS,
+        catalog: PRODUCT_CATALOG,
+        kampusList: [],
+        view: 'home',
+        selectedCatName: '',
+        selectedData: {},
+        selectedTier: {},
         bookingDate: '',
-        selectedCategory: '',
         selectedTime: '',
         timeSlots: [],
-        kampusList: [],
-        showFormSection: false,
-        modalTncBooking: false,
-        modalTncFoto: false,
-        consentAgreed: false,
-        loading: false,
-        successData: null,
-        form: {
-          kampus: '', nama: '', wa: '', email: '', kotaKtp: '', domisiliJogja: ''
-        },
-        fileBase64: null,
-        fileName: '',
+        form: { nama:'', wa:'', jmlOrang: 1, email:'', kampus:'', kotaKtp:'', domisiliJogja:'', sosmed:'', sumber:'Instagram', rekamBts:'SETUJU', lokasiOutdoor:'' },
+        fileBase64: null, fileName: '',
+        modalTnc: false, consentAgreed: false, loading: false, successData: null,
 
         initApp() {
-          fetch(GAS_API_URL + "?action=getInitialData")
-            .then(res => res.json())
-            .then(res => {
-              this.kampusList = res.kampusList || [];
-            }).catch(() => {});
+          fetch(GAS_API_URL + "?action=getInitialData").then(r=>r.json()).then(res=>{ this.kampusList = res.kampusList || []; }).catch(()=>{});
         },
-
-        onDateSelected() {
-          this.selectedCategory = '';
-          this.selectedTime = '';
-          this.showFormSection = false;
-          this.generateTimeSlots();
+        openProduct(catName) {
+          this.selectedCatName = catName;
+          this.selectedData = this.catalog[catName];
+          this.selectedTier = {}; this.bookingDate = ''; this.selectedTime = '';
+          this.view = 'detail';
+          this.scrollToTop();
         },
-
-        selectCategory(catName) {
-          this.selectedCategory = catName;
-          this.selectedTime = '';
+        selectTier(tier) { this.selectedTier = tier; },
+        proceedFromDetail() {
+          if (this.selectedData.isOutdoor || this.selectedData.isBundling) {
+            this.view = 'form';
+          } else {
+            this.view = 'schedule';
+          }
+          this.scrollToTop();
         },
-
+        directWaPasFoto() {
+          let txt = `Halo Admin Sunmore Studio, saya berminat untuk *Pas Foto Express*.\n\nMohon info ketersediaan jam kedatangan dan pilihan warna background hari ini. Terima kasih!`;
+          window.open(`https://wa.me/62895372360806?text=${encodeURIComponent(txt)}`, '_blank');
+        },
         generateTimeSlots() {
           let slots = [];
-          for(let h = 9; h < 20; h++) {
-            for(let m of ['00', '30']) {
-              let timeStr = `${String(h).padStart(2, '0')}:${m}`;
-              slots.push({ time: timeStr, booked: false });
-            }
-          }
+          for(let h=9; h<20; h++) { for(let m of ['00','30']) { slots.push({ time: `${String(h).padStart(2,'0')}:${m}`, booked: false }); } }
           this.timeSlots = slots;
         },
-
-        openTncBookingModal() {
-          this.modalTncBooking = true;
-        },
-
-        confirmTncBooking() {
-          this.modalTncBooking = false;
-          this.showFormSection = true;
-          this.$nextTick(() => {
-            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
-          });
-        },
-
+        scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); },
+        copyRek(text) { navigator.clipboard.writeText(text); alert("Nomor rekening berhasil disalin!"); },
         handleFileUpload(e) {
-          let file = e.target.files[0];
-          if(!file) return;
-          this.fileName = file.name;
-          let reader = new FileReader();
-          reader.onload = (evt) => { this.fileBase64 = evt.target.result; };
-          reader.readAsDataURL(file);
+          let file = e.target.files[0]; if(!file) return; this.fileName = file.name;
+          let reader = new FileReader(); reader.onload = (evt) => { this.fileBase64 = evt.target.result; }; reader.readAsDataURL(file);
         },
-
-        openTncFotoModal() {
-          if(!this.form.nama || !this.form.wa || !this.form.kampus || !this.fileBase64) {
-            alert("Mohon lengkapi Nama, WA, Kampus, dan Upload Bukti Transfer DP!");
-            return;
-          }
-          this.modalTncFoto = true;
+        openTncModal() {
+          if(!this.form.nama || !this.form.wa || !this.form.kampus || !this.fileBase64) { alert("Wajib isi Nama, WA, Kampus, dan Upload DP!"); return; }
+          if((this.selectedData.isOutdoor || this.selectedData.isBundling) && (!this.form.lokasiOutdoor || !this.bookingDate)) { alert("Wajib isi Spot Lokasi & Tanggal Usulan Outdoor!"); return; }
+          this.modalTnc = true;
         },
-
-        submitFinalBooking() {
+        submitFinal() {
           this.loading = true;
+          let namaPaketFinal = `${this.selectedCatName} - ${this.selectedTier.level}`;
+
           let payload = {
-            kodeProduk: this.selectedCategory.substring(0, 4).toUpperCase(),
-            namaPaket: this.selectedCategory,
-            durasiMenit: 45,
-            hargaFull: 175000,
-            nominalDp: 50000,
-            tanggalFoto: this.bookingDate,
-            jamFoto: this.selectedTime,
-            kampusKode: this.form.kampus,
-            kampusResmi: this.kampusList.find(k => k.singkatan === this.form.kampus)?.namaResmi || this.form.kampus,
-            namaKlien: this.form.nama,
-            noWhatsapp: this.form.wa,
-            email: this.form.email,
-            kotaKtp: this.form.kotaKtp,
-            domisiliJogja: this.form.domisiliJogja,
-            buktiTfBase64: this.fileBase64,
-            buktiTfFileName: this.fileName
+            kodeProduk: this.selectedData.kode, namaPaket: namaPaketFinal, levelTier: this.selectedTier.level,
+            durasiMenit: parseInt(this.selectedTier.durasi), hargaFull: this.selectedTier.hargaFull, nominalDp: this.selectedTier.dp,
+            tanggalFoto: this.bookingDate, jamFoto: this.selectedTime,
+            isOutdoor: this.selectedData.isOutdoor, isBundling: this.selectedData.isBundling, lokasiOutdoor: this.form.lokasiOutdoor,
+            kampusKode: this.form.kampus, kampusResmi: this.form.kampus,
+            namaKlien: this.form.nama, noWhatsapp: this.form.wa, jumlahOrang: this.form.jmlOrang, email: this.form.email,
+            kotaKtp: this.form.kotaKtp, domisiliJogja: this.form.domisiliJogja, akunSosmed: this.form.sosmed,
+            sumberMarketing: this.form.sumber, rekamBts: this.form.rekamBts,
+            buktiTfBase64: this.fileBase64, buktiTfFileName: this.fileName
           };
 
-          fetch(GAS_API_URL, {
-            method: 'POST',
-            body: JSON.stringify(payload)
-          })
-          .then(r => r.json())
-          .then(res => {
-            this.loading = false;
-            this.modalTncFoto = false;
-            if(res.success) {
-              this.successData = res;
-            } else {
-              alert(res.message);
-            }
-          })
-          .catch(() => {
-            this.loading = false;
-            alert("Koneksi gagal. Silakan coba submit kembali.");
-          });
+          fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify(payload) }).then(r=>r.json()).then(res=>{
+            this.loading = false; this.modalTnc = false;
+            if(res.success) { this.successData = res; } else { alert(res.message); }
+          }).catch(()=>{ this.loading=false; alert("Gagal koneksi ke server."); });
         },
-
         redirectToWA() {
-          let text = `Halo Admin Sunmore Studio, saya telah melakukan reservasi mandiri:\n\n` +
-                     `• *ID Booking:* ${this.successData.bookingId}\n` +
-                     `• *Nama:* ${this.form.nama}\n` +
-                     `• *Kampus:* ${this.form.kampus}\n` +
-                     `• *Jadwal:* ${this.bookingDate} @ ${this.selectedTime} WIB\n\n` +
-                     `📄 *Link Invoice PDF:* ${this.successData.pdfUrl}\n\n` +
-                     `Mohon konfirmasi pembayarannya, terima kasih!`;
-          let url = `https://wa.me/${this.successData.waNumber}?text=${encodeURIComponent(text)}`;
-          window.open(url, '_blank');
+          let txt = `Halo Admin Sunmore Studio, saya baru saja reservasi mandiri:\n\n• *ID:* ${this.successData.bookingId}\n• *Nama:* ${this.form.nama}\n• *Paket:* ${this.selectedCatName} (${this.selectedTier.level})\n• *Jadwal:* ${this.bookingDate} ${this.selectedTime ? '@ ' + this.selectedTime + ' WIB' : ''}\n\n📄 *Invoice PDF:* ${this.successData.pdfUrl}\n\nMohon verifikasi DP saya, terima kasih!`;
+          window.open(`https://wa.me/62895372360806?text=${encodeURIComponent(txt)}`, '_blank');
         }
       }
     }
